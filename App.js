@@ -32,7 +32,7 @@ export default function App() {
             <View style={styles.current_weather_container}>
 
                 <View style={styles.current_weather_container_1}>
-                    <Text>2024-01-08 18:07:07</Text>
+                    <Text>{currentWeather.date}</Text>
                     <Text>{currentWeather.location}</Text>
                     <Text>{currentWeather.description}</Text>
                     <Image
