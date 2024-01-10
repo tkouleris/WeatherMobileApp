@@ -5,9 +5,10 @@ import * as config from '../config'
 
 export async function fetchData(){
     const response = await axios.get(config.URL + '209098')
-    // console.log(response.data.current_weather.timezone)
-    // console.log(Date.parse(response.data.current_weather.dt) -response.data.current_weather.timezone)
-    let date = new Date(Date.parse(response.data.current_weather.dt));
+
+    let timestamp = Date.parse(response.data.current_weather.dt) - (response.data.current_weather.timezone / 0.001);
+    let date = new Date(timestamp);
+
     let final_date = date.getFullYear()+
     "-"+(date.getMonth() + 1).toString().padStart(2, '0')+
     "-"+date.getDate().toString().padStart(2, '0')+
