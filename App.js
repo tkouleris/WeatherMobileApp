@@ -1,5 +1,5 @@
 import {StatusBar} from 'expo-status-bar';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
 import {useEffect, useState} from "react";
 import * as http from "./util/http";
 import CurrentWeatherCard from "./components/CurrentWeatherCard";
@@ -17,14 +17,21 @@ export default function App() {
         description: ''
     })
 
+    const [forecast, setForecast] = useState([])
+
     useEffect(() => {
         async function getData() {
-            const data = await http.fetchData()
-            setCurrentWeather(data.current_weather);
+            return await http.fetchData()
+
+            // setCurrentWeather(data.current_weather);
+            // setForecast(data.forecast);
+            // return data.forecast
         }
+        getData().then((d)=>{
+            setCurrentWeather(d.current_weather)
+            setForecast(d.forecast)
+        })
 
-
-        getData()
     }, []);
 
     return (
@@ -33,7 +40,11 @@ export default function App() {
             <View style={styles.forecast_container}>
                 <Text>Forecast</Text>
             </View>
-
+            <FlatList data={forecast} renderItem={ itemData =>{
+                return (
+                    <Text>test</Text>
+                )
+            }} />
             <StatusBar style="auto"/>
         </View>
     );

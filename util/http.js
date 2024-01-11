@@ -26,7 +26,29 @@ export async function fetchData(){
         feels_like: response.data.current_weather.main.feels_like,
         description: response.data.current_weather.weather[0].main + ", " + response.data.current_weather.weather[0].description
     }
+
+    let forecast = [];
+    let current_day_of_the_week = dayOfWeek(new Date(Date.parse(response.data.current_weather.dt)).getDay());
+    for(let index = current_day_of_the_week; index <= 7; index++){
+        forecast.push(response.data.forecast[index])
+    }
+    for(let index = 0; index < current_day_of_the_week; index++){
+        forecast.push(response.data.forecast[index])
+    }
+
     return {
-        'current_weather': cweather
+        'current_weather': cweather,
+        'forecast': forecast
     };
+}
+
+function dayOfWeek(number){
+    number = number-1;
+    if(number < 0){
+        number = 6
+    }
+    if(number > 6){
+        number = 0;
+    }
+    return number;
 }
