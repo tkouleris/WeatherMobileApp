@@ -22,15 +22,15 @@ function HourForecast({itemKey, hourData}){
                 <Ionicons name={'flag'} size={18} />
                 <Text style={styles.forecast_day_hour_text}> {hourData.wind_speed} m/s</Text>
             </View>
+        </View>
+        <View style={styles.forecast_day_hour_container_description}>
             <Image
-                style={{width:50, height:50}}
+                style={{width:45, height:45}}
                 source={{
                     uri: 'https://openweathermap.org/img/wn/'+hourData.icon+'@2x.png',
                 }}
             />
-        </View>
-        <View style={styles.forecast_day_hour_container_description}>
-            <Text style={styles.forecast_day_hour_text}> {hourData.description} </Text>
+            <Text style={styles.forecast_day_hour_text_description}> {hourData.description} </Text>
         </View>
 
     </View>
@@ -50,16 +50,27 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     forecast_day_hour_container_datum:{
-        width: '21%',
+        width: '25%',
         flexDirection:'row',
         alignItems:'center',
     },
     forecast_day_hour_text:{
-        marginRight: 5
+        marginRight: 5,
+        // height: 45,
+        // verticalAlign: 'bottom'
     },
     forecast_day_hour_container_description:{
         width: '100%',
+        flexDirection:'row',
         alignItems:'flex-start',
-        justifyContent:'flex-start'
+        justifyContent:'flex-start',
+        // borderTopWidth: 1,
+        // borderTopColor: '#d2c1c1'
     },
+    forecast_day_hour_text_description:{
+        marginRight: 5,
+        paddingTop:20,
+        height: 45,
+        verticalAlign: 'bottom'
+    }
 })
