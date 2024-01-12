@@ -1,9 +1,11 @@
-import {StyleSheet, Text, View} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 
 function HourForecast({itemKey, hourData}){
     return <View style={styles.forecast_day_hour_container} key={itemKey}>
+
         <View style={styles.forecast_day_hour_container_data}>
+
             <View style={styles.forecast_day_hour_container_datum}>
                 <Ionicons name={'time'} size={18} />
                 <Text style={styles.forecast_day_hour_text}>{hourData.time}</Text>
@@ -20,6 +22,12 @@ function HourForecast({itemKey, hourData}){
                 <Ionicons name={'flag'} size={18} />
                 <Text style={styles.forecast_day_hour_text}> {hourData.wind_speed} m/s</Text>
             </View>
+            <Image
+                style={{width:50, height:50}}
+                source={{
+                    uri: 'https://openweathermap.org/img/wn/'+hourData.icon+'@2x.png',
+                }}
+            />
         </View>
         <View style={styles.forecast_day_hour_container_description}>
             <Text style={styles.forecast_day_hour_text}> {hourData.description} </Text>
@@ -42,7 +50,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     forecast_day_hour_container_datum:{
-        width: '25%',
+        width: '21%',
         flexDirection:'row',
         alignItems:'center',
     },
