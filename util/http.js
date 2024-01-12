@@ -30,10 +30,14 @@ export async function fetchData(){
     let forecast = [];
     let current_day_of_the_week = dayOfWeek(new Date(Date.parse(response.data.current_weather.dt)).getDay());
     for(let index = current_day_of_the_week; index <= 7; index++){
-        forecast.push(response.data.forecast[index])
+        if(response.data.forecast[index] !== undefined){
+            forecast.push(response.data.forecast[index])
+        }
     }
     for(let index = 0; index < current_day_of_the_week; index++){
-        forecast.push(response.data.forecast[index])
+        if(response.data.forecast[index] !== undefined){
+            forecast.push(response.data.forecast[index])
+        }
     }
 
     return {
