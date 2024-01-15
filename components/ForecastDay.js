@@ -14,12 +14,8 @@ function ForecastDay({item}){
             </View>
             <View >
                 {item.item.map((hourData, key) => {
-
-                    // console.log('https://openweathermap.org/img/wn/'+hourData.icon+'@2x.png')
                     return (
                         <HourForecast key={key} itemKey={key} hourData={hourData} />
-
-
                     );
                 })}
             </View>
