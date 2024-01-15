@@ -18,6 +18,7 @@ export async function fetchData(){
 
     let cweather = {
         date: final_date+" (local)",
+        timestamp: timestamp,
         image: 'https://openweathermap.org/img/wn/'+response.data.current_weather.weather[0].icon+'@2x.png',
         location: response.data.current_weather.name,
         temperature: response.data.current_weather.main.temp,

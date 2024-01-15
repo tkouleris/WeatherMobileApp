@@ -4,7 +4,12 @@ import {useEffect, useState} from "react";
 import * as http from "./util/http";
 import CurrentWeatherCard from "./components/CurrentWeatherCard";
 import ForecastDay from "./components/ForecastDay";
+import {NavigationContainer} from '@react-navigation/native'
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import MainComponent from "./components/MainComponent";
+import {Ionicons} from "@expo/vector-icons";
 
+const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [currentWeather, setCurrentWeather] = useState({
@@ -35,49 +40,66 @@ export default function App() {
 
     }, []);
 
-    return (
-        <View style={styles.container}>
-            <CurrentWeatherCard currentWeather={currentWeather}/>
-            <View style={styles.forecast_container}>
-                <View style={styles.forecast_title_container}>
-                    <Text style={styles.forecast_title_text}>5 day / 3 hour forecast</Text>
-                </View>
-                <View>
-                    <FlatList data={forecast} renderItem={ itemData =>{
-                        return <ForecastDay item={itemData} />
-                    }} />
-                </View>
+    async function refresh(){
+        const data = await http.fetchData()
+        if(data.current_weather.timestamp > currentWeather.timestamp){
+            setCurrentWeather(data.current_weather)
+            setForecast(data.forecast)
+        }
+    }
 
-            </View>
+    return (
+        <NavigationContainer>
             <StatusBar style="auto"/>
-        </View>
+            <Stack.Navigator >
+                <Stack.Screen
+                    name="MainComponent"
+                    options={ ({navigation}) => ({
+                    title: 'Forecast',
+                    headerRight: ({tintColor}) => (
+                        <Ionicons
+                            icon="add"
+                            size={24}
+                            color={tintColor}
+                            onPress={refresh}
+                            name="refresh"
+                        />
+                    )
+                })}
+                >
+                    {props => <MainComponent {...props} currentWeather={currentWeather} forecast={forecast} />}
+                </Stack.Screen>
+            </Stack.Navigator>
+            {/*<MainComponent currentWeather={currentWeather} forecast={forecast} />*/}
+
+        </NavigationContainer>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#808080',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 10,
-
-    },
-    forecast_container:{
-        width: '100%',
-        flex: 2,
-        flexDirection: 'column',
-        alignItems: 'stretch',
-        justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 30
-    },
-    forecast_title_container:{
-        marginVertical: 20
-    },
-    forecast_title_text:{
-        fontSize:18,
-        color: '#fff',
-        textDecorationLine: 'underline',
-    },
-});
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         backgroundColor: '#808080',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         paddingHorizontal: 10,
+//
+//     },
+//     forecast_container:{
+//         width: '100%',
+//         flex: 2,
+//         flexDirection: 'column',
+//         alignItems: 'stretch',
+//         justifyContent: 'center',
+//         marginTop: 10,
+//         marginBottom: 30
+//     },
+//     forecast_title_container:{
+//         marginVertical: 20
+//     },
+//     forecast_title_text:{
+//         fontSize:18,
+//         color: '#fff',
+//         textDecorationLine: 'underline',
+//     },
+// });
