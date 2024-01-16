@@ -41,9 +41,12 @@ export async function fetchData(){
         }
     }
 
+    let cities = response.data.cities;
+
     return {
         'current_weather': cweather,
-        'forecast': forecast
+        'forecast': forecast,
+        'cities': cities
     };
 }
 

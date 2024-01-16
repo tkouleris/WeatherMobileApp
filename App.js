@@ -5,13 +5,15 @@ import {NavigationContainer} from '@react-navigation/native'
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import MainComponent from "./components/MainComponent";
 import {Ionicons} from "@expo/vector-icons";
+import MenuComponent from "./components/MenuComponent";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+    // const navigation = useNavigation();
     const [currentWeather, setCurrentWeather] = useState({
         dt: '',
-        image:'https://weather.tkouleris.eu/static/dist/img/weather_app.png',
+        image: 'https://weather.tkouleris.eu/static/dist/img/weather_app.png',
         temperature: '',
         location: '',
         humidity: '',
@@ -21,47 +23,74 @@ export default function App() {
     })
 
     const [forecast, setForecast] = useState([])
+    const [cities, setCities] = useState([])
 
     useEffect(() => {
         async function getData() {
             return await http.fetchData()
         }
-        getData().then((d)=>{
+
+        getData().then((d) => {
             setCurrentWeather(d.current_weather)
             setForecast(d.forecast)
+            setCities(d.cities)
         })
 
     }, []);
 
-    async function refresh(){
+    async function refresh() {
         const data = await http.fetchData()
-        if(data.current_weather.timestamp > currentWeather.timestamp){
+        if (data.current_weather.timestamp > currentWeather.timestamp) {
             setCurrentWeather(data.current_weather)
             setForecast(data.forecast)
         }
     }
 
+    function menu(navigation, cities){
+        console.log(cities);
+        navigation.navigate('Menu', {'cities': cities})
+    }
+
     return (
         <NavigationContainer>
             <StatusBar style="auto"/>
-            <Stack.Navigator >
+            <Stack.Navigator
+                // screenOptions={{
+                //     headerStyle:{ backgroundColor: '#24180f', textAlign:'center' },
+                //     headerTintColor:'white',
+                //     contentStyle:{ backgroundColor: '#24180f' },
+                // }}
+            >
                 <Stack.Screen
+
                     name="MainComponent"
-                    options={ ({navigation}) => ({
-                    title: 'Forecast',
-                    headerRight: ({tintColor}) => (
-                        <Ionicons
-                            icon="add"
-                            size={24}
-                            color={tintColor}
-                            onPress={refresh}
-                            name="refresh"
-                        />
-                    )
-                })}
+                    options={({navigation}) => ({
+                        title: 'Forecast',
+                        headerTitleAlign: 'center',
+                        headerLeft: ({tintColor}) => (
+                            <Ionicons
+                                icon="menu"
+                                size={24}
+                                color={tintColor}
+                                style={{marginRight: 15}}
+                                onPress={menu.bind(this,navigation, cities)}
+                                name="menu"
+                            />
+                        ),
+                        headerRight: ({tintColor}) => (
+                            <Ionicons
+                                icon="add"
+                                size={24}
+                                color={tintColor}
+                                onPress={refresh}
+                                name="refresh"
+                            />
+                        )
+                    })}
                 >
-                    {props => <MainComponent {...props} currentWeather={currentWeather} forecast={forecast} />}
+                    {props => <MainComponent {...props} currentWeather={currentWeather} forecast={forecast}/>}
                 </Stack.Screen>
+                <Stack.Screen name="Menu" component={MenuComponent} initialParams={cities} />
             </Stack.Navigator>
 
         </NavigationContainer>
