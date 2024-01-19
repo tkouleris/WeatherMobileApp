@@ -47,7 +47,6 @@ export default function App() {
     }
 
     function menu(navigation, cities){
-        console.log(cities);
         navigation.navigate('Menu', {'cities': cities})
     }
 
@@ -90,7 +89,9 @@ export default function App() {
                 >
                     {props => <MainComponent {...props} currentWeather={currentWeather} forecast={forecast}/>}
                 </Stack.Screen>
-                <Stack.Screen name="Menu" component={MenuComponent} initialParams={cities} />
+                <Stack.Screen name="Menu">
+                    {props => <MenuComponent {...props} cities={cities}/>}
+                </Stack.Screen>
             </Stack.Navigator>
 
         </NavigationContainer>

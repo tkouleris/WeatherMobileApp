@@ -40,9 +40,37 @@ export async function fetchData(){
             forecast.push(response.data.forecast[index])
         }
     }
+    // console.log(response.data.cities);
+    let tmp_cities = response.data.cities;
+    let cities = [];
+    let attica = []
+    let thessaloniki = [];
+    for(let division_index in tmp_cities){
+        for(let city_index in tmp_cities[division_index]){
+            if(division_index === 'Attica'){
+                attica.push(tmp_cities[division_index][city_index])
+            }
+            if(division_index === 'Thessaloniki'){
+                thessaloniki.push(tmp_cities[division_index][city_index]);
+            }
+        }
 
-    let cities = response.data.cities;
+    }
 
+    cities = [
+        {
+            division: 'Attica',
+            data: attica
+        },
+        {
+            division: 'Thessaloniki',
+            data: thessaloniki
+        }
+    ]
+
+    // cities.map((division, index) =>{
+    //    console.log(division.data)
+    // });
     return {
         'current_weather': cweather,
         'forecast': forecast,
