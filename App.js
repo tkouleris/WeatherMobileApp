@@ -10,7 +10,7 @@ import MenuComponent from "./components/MenuComponent";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-    // const navigation = useNavigation();
+    const [isLoading, setIsLoading] = useState(true)
     const [currentWeather, setCurrentWeather] = useState({
         dt: '',
         image: 'https://weather.tkouleris.eu/static/dist/img/weather_app.png',
@@ -26,15 +26,27 @@ export default function App() {
     const [cities, setCities] = useState([])
     const [cityId, setCityId] = useState(209098)
     async function getData(cityId) {
+        setCurrentWeather({
+            dt: '',
+            image: 'https://weather.tkouleris.eu/static/dist/img/weather_app.png',
+            temperature: '',
+            location: '',
+            humidity: '',
+            wind_speed: '',
+            feels_like: '',
+            description: ''
+        });
+        setForecast([]);
         return await http.fetchData(cityId)
     }
     useEffect(() => {
-
+        setIsLoading(true)
 
         getData(cityId).then((d) => {
             setCurrentWeather(d.current_weather)
             setForecast(d.forecast)
             setCities(d.cities)
+            setIsLoading(false)
         })
 
     }, []);
@@ -52,12 +64,14 @@ export default function App() {
     }
 
     function selectCityHandler(cityId){
+        setIsLoading(true)
         setCityId(cityId);
         getData(cityId).then((d) => {
             setCurrentWeather(d.current_weather)
             setForecast(d.forecast)
-            // setCities(d.cities)
+            setIsLoading(false)
         })
+
     }
 
     return (
@@ -91,7 +105,7 @@ export default function App() {
                         )
                     })}
                 >
-                    {props => <MainComponent {...props} currentWeather={currentWeather} forecast={forecast}/>}
+                    {props => <MainComponent {...props} isLoading={isLoading} currentWeather={currentWeather} forecast={forecast}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Menu">
                     {props => <MenuComponent {...props} cities={cities} onSelect={selectCityHandler} />}

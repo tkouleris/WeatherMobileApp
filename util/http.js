@@ -41,7 +41,7 @@ export async function fetchData(cityId){
             forecast.push(response.data.forecast[index])
         }
     }
-    // console.log(response.data.cities);
+
     let tmp_cities = response.data.cities;
     let cities = [];
     let attica = []
@@ -69,9 +69,6 @@ export async function fetchData(cityId){
         }
     ]
 
-    // cities.map((division, index) =>{
-    //    console.log(division.data)
-    // });
     return {
         'current_weather': cweather,
         'forecast': forecast,

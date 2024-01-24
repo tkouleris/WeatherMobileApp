@@ -1,8 +1,12 @@
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import CurrentWeatherCard from "./CurrentWeatherCard";
 import ForecastDay from "./ForecastDay";
+import LoadingOverlay from "./UI/LoadingOverlay";
 
-function MainComponent({route, currentWeather, forecast}) {
+function MainComponent({currentWeather, forecast, isLoading}) {
+    if(isLoading){
+        return <LoadingOverlay />
+    }
 
 
     return <View style={styles.container}>

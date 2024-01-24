@@ -4,10 +4,6 @@ import {useEffect, useState} from "react";
 function MenuComponent({navigation, cities, onSelect}){
 
     function citySelectionHandler(cityId){
-        // console.log(cityId)
-        // navigation.push('MainComponent', {
-        //     cityId: cityId,
-        // })
         onSelect(cityId);
         navigation.navigate('MainComponent')
     }
