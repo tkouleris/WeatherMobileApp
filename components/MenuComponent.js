@@ -1,10 +1,15 @@
 import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 
-function MenuComponent({cities}){
+function MenuComponent({navigation, cities, onSelect}){
 
     function citySelectionHandler(cityId){
-        console.log(cityId)
+        // console.log(cityId)
+        // navigation.push('MainComponent', {
+        //     cityId: cityId,
+        // })
+        onSelect(cityId);
+        navigation.navigate('MainComponent')
     }
 
     return <View>

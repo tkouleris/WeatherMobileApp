@@ -2,7 +2,9 @@ import {FlatList, StyleSheet, Text, View} from "react-native";
 import CurrentWeatherCard from "./CurrentWeatherCard";
 import ForecastDay from "./ForecastDay";
 
-function MainComponent({currentWeather, forecast}) {
+function MainComponent({route, currentWeather, forecast}) {
+
+
     return <View style={styles.container}>
         <CurrentWeatherCard currentWeather={currentWeather}/>
         <View style={styles.forecast_container}>

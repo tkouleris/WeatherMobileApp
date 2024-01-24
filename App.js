@@ -24,13 +24,14 @@ export default function App() {
 
     const [forecast, setForecast] = useState([])
     const [cities, setCities] = useState([])
-
+    const [cityId, setCityId] = useState(209098)
+    async function getData(cityId) {
+        return await http.fetchData(cityId)
+    }
     useEffect(() => {
-        async function getData() {
-            return await http.fetchData()
-        }
 
-        getData().then((d) => {
+
+        getData(cityId).then((d) => {
             setCurrentWeather(d.current_weather)
             setForecast(d.forecast)
             setCities(d.cities)
@@ -39,7 +40,7 @@ export default function App() {
     }, []);
 
     async function refresh() {
-        const data = await http.fetchData()
+        const data = await http.fetchData(cityId)
         if (data.current_weather.timestamp > currentWeather.timestamp) {
             setCurrentWeather(data.current_weather)
             setForecast(data.forecast)
@@ -50,16 +51,19 @@ export default function App() {
         navigation.navigate('Menu', {'cities': cities})
     }
 
+    function selectCityHandler(cityId){
+        setCityId(cityId);
+        getData(cityId).then((d) => {
+            setCurrentWeather(d.current_weather)
+            setForecast(d.forecast)
+            // setCities(d.cities)
+        })
+    }
+
     return (
         <NavigationContainer>
             <StatusBar style="auto"/>
-            <Stack.Navigator
-                // screenOptions={{
-                //     headerStyle:{ backgroundColor: '#24180f', textAlign:'center' },
-                //     headerTintColor:'white',
-                //     contentStyle:{ backgroundColor: '#24180f' },
-                // }}
-            >
+            <Stack.Navigator>
                 <Stack.Screen
 
                     name="MainComponent"
@@ -90,7 +94,7 @@ export default function App() {
                     {props => <MainComponent {...props} currentWeather={currentWeather} forecast={forecast}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Menu">
-                    {props => <MenuComponent {...props} cities={cities}/>}
+                    {props => <MenuComponent {...props} cities={cities} onSelect={selectCityHandler} />}
                 </Stack.Screen>
             </Stack.Navigator>
 

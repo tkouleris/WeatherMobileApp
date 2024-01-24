@@ -3,8 +3,9 @@ import * as config from '../config'
 
 
 
-export async function fetchData(){
-    const response = await axios.get(config.URL + '209098')
+export async function fetchData(cityId){
+    // const response = await axios.get(config.URL + '209098')
+    const response = await axios.get(config.URL + cityId)
 
     let timestamp = Date.parse(response.data.current_weather.dt) - (response.data.current_weather.timezone / 0.001);
     let date = new Date(timestamp);
