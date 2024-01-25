@@ -1,4 +1,5 @@
 import {Image, StyleSheet, Text, View} from "react-native";
+import {Ionicons} from "@expo/vector-icons";
 
 function CurrentWeatherCard({currentWeather}){
     return  <View style={styles.current_weather_container}>
@@ -17,16 +18,22 @@ function CurrentWeatherCard({currentWeather}){
                 />
             </View>
             <View style={styles.current_weather_center}>
-                <Text style={styles.current_weather_center_text}>{currentWeather.temperature}°C</Text>
-                <Text>Feels like {currentWeather.feels_like}°C</Text>
+                <View style={{flexDirection:'row'}}>
+                    <Ionicons name={'thermometer'} size={30} style={{paddingTop:5}} />
+                    <Text style={styles.current_weather_center_text}>{Math.round(currentWeather.temperature)}°C</Text>
+                </View>
+
+                <Text>Feels like {Math.round(currentWeather.feels_like)}°C</Text>
             </View>
             <View style={styles.current_weather_right}>
                 <View style={styles.current_weather_right_measurement}>
-                    <Text style={styles.current_weather_right_label}>Humidity: </Text>
+                    {/*<Text style={styles.current_weather_right_label}>Humidity: </Text>*/}
+                    <Ionicons name={'water'} size={18} />
                     <Text>{currentWeather.humidity} %</Text>
                 </View>
                 <View style={styles.current_weather_right_measurement}>
-                    <Text style={styles.current_weather_right_label}>Wind Speed: </Text>
+                    {/*<Text style={styles.current_weather_right_label}>Wind Speed: </Text>*/}
+                    <Ionicons name={'flag'} size={18} />
                     <Text>{currentWeather.wind_speed} m/s</Text>
                 </View>
 
@@ -54,15 +61,6 @@ const styles = StyleSheet.create({
         alignItems:'flex-start',
         flexDirection: 'column',
     },
-    current_weather_container_1:{
-        paddingHorizontal: 5,
-        width:'35%'
-    },
-    current_weather_container_2:{
-        width:'65%',
-        alignItems:'center'
-    },
-
     temperature_text:{
         fontWeight:'bold',
         fontSize: 30,
@@ -102,10 +100,10 @@ const styles = StyleSheet.create({
         fontSize:30,
     },
     current_weather_right:{
-        width: '30%',
+        width: '45%',
         alignItems:'flex-start',
         justifyContent:'center',
-        paddingLeft:50
+        paddingLeft:30
     },
     current_weather_right_measurement:{
         flexDirection:'row'
@@ -115,7 +113,8 @@ const styles = StyleSheet.create({
     },
     current_weather_description_container:{
         width:'100%',
-        alignItems:'center'
+        alignItems:'center',
+        paddingTop: 5
     },
     current_weather_description:{
         width: '100%',

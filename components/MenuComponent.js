@@ -8,7 +8,7 @@ function MenuComponent({navigation, cities, onSelect}){
         navigation.navigate('MainComponent')
     }
 
-    return <View>
+    return <View style={styles.menuContainer}>
         <ScrollView >
             {
                 cities.map((division, index) => (
@@ -18,7 +18,11 @@ function MenuComponent({navigation, cities, onSelect}){
                     </View>
                     {
                         division.data.map((city, city_index)=>(
-                            <Pressable key={city.id} onPress={citySelectionHandler.bind(this, city.id)}>
+                            <Pressable
+                                key={city.id}
+                                onPress={citySelectionHandler.bind(this, city.id)}
+                                style={({pressed})=> pressed && styles.pressed}
+                            >
                                 <View  style={styles.cityContainer}>
                                     <Text>- {city.name}</Text>
                                 </View>
@@ -40,10 +44,15 @@ function MenuComponent({navigation, cities, onSelect}){
 export default MenuComponent
 
 const styles = StyleSheet.create({
+    menuContainer:{
+        paddingTop: 10,
+        paddingBottom:20
+    },
     divisionContainer:{
         flexDirection:'row',
         alignContent:'center',
-        justifyContent:'center'
+        justifyContent:'center',
+        paddingTop: 30,
     },
     division_title:{
         fontWeight:'bold',
@@ -55,6 +64,12 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderWidth: 1,
         borderColor: '#000',
-        margin: 5
+        margin: 5,
+        borderRadius:10
+    },
+    pressed:{
+        opacity: 0.75,
+        backgroundColor: '#5a5a5a',
+        borderRadius: 4
     }
 })
