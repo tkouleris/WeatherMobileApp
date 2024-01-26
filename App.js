@@ -6,10 +6,12 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import MainComponent from "./components/MainComponent";
 import {Ionicons} from "@expo/vector-icons";
 import MenuComponent from "./components/MenuComponent";
+import {init, updateDefault} from "./util/database";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+    const [defaultCity, setDefaultCity] = useState()
     const [isLoading, setIsLoading] = useState(true)
     const [currentWeather, setCurrentWeather] = useState({
         dt: '',
@@ -41,12 +43,17 @@ export default function App() {
     }
     useEffect(() => {
         setIsLoading(true)
+        init().then((option)=>{
+            console.log('default city: '+option.city_id)
+            setCityId(option.city_id)
+            setDefaultCity(option.city_id)
 
-        getData(cityId).then((d) => {
-            setCurrentWeather(d.current_weather)
-            setForecast(d.forecast)
-            setCities(d.cities)
-            setIsLoading(false)
+            getData(option.city_id).then((d) => {
+                setCurrentWeather(d.current_weather)
+                setForecast(d.forecast)
+                setCities(d.cities)
+                setIsLoading(false)
+            })
         })
 
     }, []);
@@ -61,6 +68,11 @@ export default function App() {
 
     function menu(navigation, cities){
         navigation.navigate('Menu', {'cities': cities})
+    }
+
+    function updateDefaultCity(cityId){
+        setDefaultCity(cityId)
+        updateDefault(cityId)
     }
 
     function selectCityHandler(cityId){
@@ -108,7 +120,7 @@ export default function App() {
                     {props => <MainComponent {...props} isLoading={isLoading} currentWeather={currentWeather} forecast={forecast}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Menu">
-                    {props => <MenuComponent {...props} cities={cities} onSelect={selectCityHandler} />}
+                    {props => <MenuComponent {...props} cities={cities} defaultCity={defaultCity} onDefaultCitySelection={updateDefaultCity} onSelect={selectCityHandler} />}
                 </Stack.Screen>
             </Stack.Navigator>
 

@@ -1,11 +1,34 @@
-import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
+import {Button, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import {useEffect, useState} from "react";
+import {updateDefault} from "../util/database";
+import ButtonSave from "./UI/ButtonSave";
 
-function MenuComponent({navigation, cities, onSelect}){
+function MenuComponent({navigation, cities, onSelect, defaultCity, onDefaultCitySelection}){
 
     function citySelectionHandler(cityId){
         onSelect(cityId);
         navigation.navigate('MainComponent')
+    }
+
+    function setDefaultCityHandler(selected){
+        onDefaultCitySelection(selected)
+        defaultCity = selected
+    }
+
+    function DefaultButton({defaultCity , currentCity}){
+        if(defaultCity !== currentCity){
+            return <View style={styles.defaultButton}>
+                <ButtonSave
+                    onPress={setDefaultCityHandler.bind(this,currentCity)}
+                    size={14}
+
+                />
+                {/*<Button*/}
+                {/*    onPress={setDefaultCityHandler.bind(this,currentCity)}*/}
+                {/*    title="*"*/}
+                {/*/>*/}
+            </View>
+        }
     }
 
     return <View style={styles.menuContainer}>
@@ -18,15 +41,20 @@ function MenuComponent({navigation, cities, onSelect}){
                     </View>
                     {
                         division.data.map((city, city_index)=>(
-                            <Pressable
-                                key={city.id}
-                                onPress={citySelectionHandler.bind(this, city.id)}
-                                style={({pressed})=> pressed && styles.pressed}
-                            >
-                                <View  style={styles.cityContainer}>
-                                    <Text>- {city.name}</Text>
+
+                                <View key={city.id} style={styles.cityContainer}>
+                                    <Pressable
+                                        onPress={citySelectionHandler.bind(this, city.id)}
+                                        style={({pressed})=>[styles.citySelection, pressed && styles.pressed]}
+                                    >
+                                        <View >
+                                            <Text>- {city.name}</Text>
+                                        </View>
+                                    </Pressable>
+                                    <DefaultButton defaultCity={defaultCity} currentCity={city.id}/>
+
                                 </View>
-                            </Pressable>
+
                         ))
 
                     }
@@ -60,7 +88,7 @@ const styles = StyleSheet.create({
     },
     cityContainer:{
         flexDirection: 'row',
-        paddingLeft:20,
+        paddingLeft: 10,
         paddingVertical: 10,
         borderWidth: 1,
         borderColor: '#000',
@@ -71,5 +99,16 @@ const styles = StyleSheet.create({
         opacity: 0.75,
         backgroundColor: '#5a5a5a',
         borderRadius: 4
+    },
+    citySelection:{
+        width: '90%',
+
+        justifyContent:'flex-start',
+        alignItems:'flex-start',
+    },
+    defaultButton:{
+        height: 30,
+        paddingTop:0,
+        paddingBottom:0
     }
 })
