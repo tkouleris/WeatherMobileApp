@@ -55,17 +55,13 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     forecast_day_hour_text:{
-        marginRight: 5,
-        // height: 45,
-        // verticalAlign: 'bottom'
+        marginRight: 5
     },
     forecast_day_hour_container_description:{
         width: '100%',
         flexDirection:'row',
         alignItems:'flex-start',
-        justifyContent:'flex-start',
-        // borderTopWidth: 1,
-        // borderTopColor: '#d2c1c1'
+        justifyContent:'flex-start'
     },
     forecast_day_hour_text_description:{
         marginRight: 5,

@@ -1,6 +1,4 @@
-import {Button, Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
-import {useEffect, useState} from "react";
-import {updateDefault} from "../util/database";
+import {Pressable, ScrollView, StyleSheet, Text, View} from "react-native";
 import ButtonSave from "./UI/ButtonSave";
 
 function MenuComponent({navigation, cities, onSelect, defaultCity, onDefaultCitySelection}){

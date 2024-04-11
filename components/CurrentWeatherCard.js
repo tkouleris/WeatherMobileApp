@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     },
     feels_like_text:{
         fontSize: 10,
-        // justifyContent:'center'
     },
     current_weather_icon: {
         width: 100,
